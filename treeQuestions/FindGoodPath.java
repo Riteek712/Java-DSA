@@ -27,57 +27,59 @@ Each line 1 of M subsequent lines where 1<<i<=M contain two space separate integ
 public class FindGoodPath{
         
     private static int gcd(int a, int b){
-        if(b ==0){
+        if(b == 0){
             return a;
         }
-        return gcd(b, a%b);
+        return gcd(b, a % b);
     }
 
     public static int countGoodPaths(int n, int[][] edges, int[] A) {
         // Create an adjacency list representation of the tree
         List<List<Integer>> adjList = new ArrayList<>();
-        for (int i = 0; i <= n; i++) {
+        for (int i = 0; i < n; i++) {
             adjList.add(new ArrayList<>());
         }
         for (int[] edge : edges) {
-            int u = edge[0];
-            int v = edge[1];
+            int u = edge[0] - 1;
+            int v = edge[1] - 1;
             adjList.get(u).add(v);
             adjList.get(v).add(u);
         }
 
         // Perform DFS to count good paths
-        int count = 0;
-        boolean[] visited = new boolean[n + 1];
-        for (int i = 1; i <= n; i++) {
-            if (!visited[i]) {
-                count += dfs(adjList, visited, i, A[i], A);
-            }
+        int totalGoodPaths = 0;
+        boolean[] visited = new boolean[n];
+        for (int i = 0; i < n; i++) {
+            totalGoodPaths += dfs(adjList, visited, i, A[i], A);
         }
-        return count;
+        return totalGoodPaths;
     }
 
-    private static int dfs(List<List<Integer>> adjList, boolean[] visited, int node, int gcd, int[] A) {
+    private static int dfs(List<List<Integer>> adjList, boolean[] visited, int node, int currentGcd, int[] A) {
         visited[node] = true;
-        int count = 1;  // Count the path starting from the current node itself
+        int count = 0;
+
+        if (currentGcd == 1) {
+            count++;
+        }
 
         // Explore all unvisited neighbors
         for (int neighbor : adjList.get(node)) {
-            if (!visited[neighbor] && gcd(gcd, A[neighbor]) == 1) {
-                count += dfs(adjList, visited, neighbor, gcd(gcd, A[neighbor]), A);
+            if (!visited[neighbor]) {
+                count += dfs(adjList, visited, neighbor, gcd(currentGcd, A[neighbor]), A);
             }
         }
 
+        visited[node] = false; // Reset visited for the next starting node
         return count;
     }
 
-    public static void main(String[] args){
-        int n =5;
-        int[][] edges = {{1,2}, {1,3}, {2,4}, {3,5}};
-        int[] A = {2,3,5,7,11};
+    public static void main(String[] args) {
+        int n = 5;
+        int[][] edges = { {1, 2}, {1, 3}, {2, 4}, {3, 5} };
+        int[] A = {2, 3, 5, 7, 11};
         int goodPaths = countGoodPaths(n, edges, A);
         System.out.println("Total good paths: " + goodPaths);
-
     }
 
 }
