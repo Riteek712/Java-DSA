@@ -89,6 +89,25 @@ public class Graph {
             
         }
      }
+     // All the possible paths form src to target. 
+     // This user DFS as an underlining algorithm.
+     public static void allPathFromSourceToTarget(ArrayList<Edge> graph[], int curr, int dest, String path, boolean[] vis){
+        if (curr == dest){
+            System.out.println(path);
+            return;
+        }
+        vis[curr] = true;
+        for(int i = 0; i < graph[curr].size(); i++){
+            Edge e = graph[curr].get(i);
+            if(!vis[e.dest]){
+                
+                allPathFromSourceToTarget(graph, e.dest, dest, path+ " -> " +e.dest, vis);
+                
+            }
+        }
+        vis[curr] = false;
+
+     }
      
      public static void main(String args[]){
         int V =7;
@@ -107,6 +126,11 @@ public class Graph {
         System.out.println("DFS Traversal");
         boolean vis[] = new boolean[V];
         dfs(graph, 0, vis);
+        boolean vis2[] = new boolean[V];
+        System.out.println();
+        System.out.println("All paths from 0 to 4: ");
+        allPathFromSourceToTarget(graph, 0, 4, "0", vis2);
+        
      }
 
 }
