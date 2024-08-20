@@ -60,6 +60,23 @@ public class Graph {
         graph[3].add(new Edge(5,4, 0));
         graph[3].add(new Edge(5,6, 0));
      }
+     public static boolean isCycleDirected(ArrayList<Edge> graph[], boolean vis[], int curr, boolean rec[]){
+        vis[curr] = true;
+        rec[curr]= true;
+
+        for(int i =0; i< graph[curr].size(); i++){
+            Edge e = graph[curr].get(i);
+            if(rec[e.dest]){ //cycle
+                return true;
+            }else if (!vis[e.dest]){
+                if(isCycleDirected(graph, vis, e.dest, rec)){
+                    return true;
+                }
+            }
+        }
+        rec[curr] = false;
+        return false;
+     }
      // BFS :breadth first search
      public static void bfs(ArrayList<Edge> graph[], int V){
         Queue<Integer> q = new LinkedList<>();
@@ -130,7 +147,9 @@ public class Graph {
         System.out.println();
         System.out.println("All paths from 0 to 4: ");
         allPathFromSourceToTarget(graph, 0, 4, "0", vis2);
-        
+        System.out.print("Cyclic graph check: ");
+        boolean check = isCycleDirected(graph, new boolean[V], 0, new boolean[V]);
+        System.out.print(check);
      }
 
 }
