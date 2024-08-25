@@ -1,14 +1,15 @@
 package basicQuestions;
 
 import java.util.Scanner;
-/*
+
+
+public class CircularCheck {
+    /*
  Given an array arr[] of length N, the task is to check whether the given array is circularly sorted or not, we need to check whether the given array is the rotated form of the sorted array. 
 
     - In ascending circularly sorted array, there will be at most one case where the element just before the current element will be greater than the current element i.e., arr[ i – 1 ] > arr[ i ]. If there is no such case, then we consider the array as circularly sorted, this is the result of a rotation by N steps. On the other hand, if there is only one such case; we then make sure that the first element of the array is greater than the last one i.e., arr[0] > arr[N-1].
     - So we need to count the total existence of arr[ i – 1 ] > arr[ i ] cases and if the count is 1 with arr[ 0 ] < arr[ N-1 ] or if the count is greater than 1 then the result will be false else the result will be true meaning that the array is circularly sorted.
  */
-
-public class CircularCheck {
     public static boolean isCircularCheck(int[] arr){
 
         int checkpoints =0;
@@ -25,6 +26,21 @@ public class CircularCheck {
         }
         return true;
     }
+
+    // Find the rotational count.
+    public static int rotationCount(int[] arr){
+        // Approach 1: find the smallest number and then return it's index.
+        // Approach 2: find the index where its value is greater than the next one. arr[i] > arr[i+1] 
+        // Code is in Approach 2
+        int res = 0;
+        for(int i =0; i < arr.length -1; i++){
+            if(arr[i]> arr[i+1]){
+                res = i+1;
+            }
+        }
+        return res;
+
+    }
     public static void main(String args[]){
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter array sequence with elements seprated by ' ' : ");
@@ -36,6 +52,9 @@ public class CircularCheck {
         }
 
         System.out.println("Is circularly sorted check: " + isCircularCheck(arr));
+        if(isCircularCheck(arr)){
+            System.out.println("Rotational count: " + rotationCount(arr));
+        }
 
     }
 }
