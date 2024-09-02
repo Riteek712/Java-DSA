@@ -1,14 +1,18 @@
 package basicQuestions;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Scanner;
 class Second
 {
 static private int secondSmallest(int[] arr, int n)
 {
-	if (n < 2)
-	{
-		return -1;
-	}
+	if (arr == null || arr.length < 2) {
+            throw new IllegalArgumentException("Array should have at least two elements.");
+        }
+
+        // Sort the array in ascending order
+        Arrays.sort(arr);
 	int small = Integer.MAX_VALUE;
 	int second_small = Integer.MAX_VALUE;
 	int i;
@@ -28,8 +32,12 @@ static private int secondSmallest(int[] arr, int n)
 }
 static private int secondLargest(int[] arr, int n)
 {
-	if(n<2)
-	return -1;
+	if (arr == null || arr.length < 2) {
+		throw new IllegalArgumentException("Array should have at least two elements.");
+	}
+
+	// Sort the array in ascending order
+	Arrays.sort(arr);
 	int large = Integer.MIN_VALUE;
 	int second_large = Integer.MIN_VALUE;
 	int i;
@@ -51,12 +59,19 @@ static private int secondLargest(int[] arr, int n)
 
 public static void main(String[] args)
 {
-	int[] arr = {1, 2, 4, 7, 7, 5};
-	int n = arr.length;
-		int sS = secondSmallest(arr, n);
-		int sL = secondLargest(arr, n);
-	System.out.println("Second smallest is "+sS);
-	System.out.println("Second largest is "+sL);
+	Scanner sc =  new Scanner(System.in);
+	System.out.println("Enter array number separated by a ' ': ");
+	String input = sc.nextLine();
+	String[] inputArrStr = input.split(" " );
+	int len = inputArrStr.length;
+	int[] arr = new int[len];
+	for(int i = 0; i < len; i++){
+		arr[i] = Integer.parseInt(inputArrStr[i]);
+	}
+	System.out.println(arr);
+	System.out.println("Second smallest number: " + secondSmallest(arr, len));
+	System.out.println("Second largest number: " + secondLargest(arr, len));
+
 }
 
 }
